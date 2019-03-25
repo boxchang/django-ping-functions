@@ -1,7 +1,8 @@
 from django.conf.urls import url
 
-from api.views import ping_1
+from api.views import subnet_ping, ping
 
 urlpatterns = [
-    url(r'^ping/$', ping_1, name="ping"),
+    url(r'^subnet_ping/$', subnet_ping, name="subnet_ping"),
+    url(r'^ping/$', ping, name="ping"),
 ]
