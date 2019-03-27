@@ -22,6 +22,7 @@ def call_ping(ip):
 
 def call_subnet_ping(ip_d):
     ips = []
+    print(ip_d)
     ip = IP(ip_d)  # 输入192.168.1.0/24网段
     print(ip.len())  # 192.168.1.0/24的网段的IP个数
     for x in ip:
