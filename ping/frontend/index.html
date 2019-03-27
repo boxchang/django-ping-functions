@@ -52,6 +52,12 @@ div#result_list span {
 //             }
 //         );
 // });
+var results = [
+      { ip: '192.168.0.1',short: '.1', value: true, style: 'background:#ffffff;color:#333333' },
+      { ip: '192.168.0.2',short: '.2', value: false, style: 'background:#a9c9a4;color:#ffffff' },
+      { ip: '192.168.0.3',short: '.3', value: true, style: 'background:#ffffff;color:#333333' }
+    ]
+
 
 var watchExampleVM = new Vue({
   el: '#watch-example',
@@ -101,12 +107,6 @@ var watchExampleVM = new Vue({
   }
 })
 
-
-var results = [
-      { ip: '192.168.0.1',short: '.1', value: true, style: 'background:#ffffff;color:#333333' },
-      { ip: '192.168.0.2',short: '.2', value: false, style: 'background:#a9c9a4;color:#ffffff' },
-      { ip: '192.168.0.3',short: '.3', value: true, style: 'background:#ffffff;color:#333333' }
-    ]
 
 Vue.component('ip-item', {
   props: ['data1'],
