@@ -1,11 +1,123 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>frontend</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script src="/dist/build.js"></script>
-  </body>
+<html>
+<head></head>
+<body>
+
+<!--開發版本-->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!--生產版本-->
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+
+<style>
+div#result_list span {
+    box-shadow: 0px 0px 1px #777;
+    border-radius: 3px;
+    border: 1px solid white;
+    padding: 3px;
+    text-align: center;
+    font-size: 11px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    width: 28px;
+    height: 22px;
+    float: left;
+}
+</style>
+
+<div id="watch-example">
+<p>
+    Ask a yes/no question:
+    <input v-model="question">
+</p>
+<p>{{ answer }}</p>
+</div>
+
+<div id="result_list">
+<ip-item
+    v-for="item in itemList"
+    v-bind:data1="item"
+    v-bind:key="item.ip"
+    ></ip-item>
+</div>
+
+<script>
+// $(function() {
+//     $.post("192.168.56.2:8000/api/subnet_ping/", {ip: "10.231.0.0/24"},
+//             function(data){
+//                 alert(data);
+//             }
+//         );
+// });
+
+var watchExampleVM = new Vue({
+  el: '#watch-example',
+  data: {
+    question: '',
+    answer: 'I cannot give you an answer until you ask a question!'
+  },
+  watch: {
+    // 如果 `question` 发生改变，这个函数就会运行
+    question: function (newQuestion, oldQuestion) {
+      this.answer = 'Waiting for you to stop typing...'
+      this.debouncedGetAnswer()
+    }
+  },
+  created: function () {
+    // `_.debounce` 是一个通过 Lodash 限制操作频率的函数。
+    // 在这个例子中，我们希望限制访问 yesno.wtf/api 的频率
+    // AJAX 请求直到用户输入完毕才会发出。想要了解更多关于
+    // `_.debounce` 函数 (及其近亲 `_.throttle`) 的知识，
+    // 请参考：https://lodash.com/docs#debounce
+    this.debouncedGetAnswer = _.debounce(this.getAnswer, 500)
+  },
+  methods: {
+    getAnswer: function () {
+      if (this.question.indexOf('?') === -1) {
+        this.answer = 'Questions usually contain a question mark. ;-)'
+        return
+      }
+      this.answer = 'Thinking...'
+      var vm = this
+      // axios.get('https://yesno.wtf/api')
+      axios.post('/api/subnet_ping/', {ip: "10.231.0.0/24"})
+        .then(function (response) {
+          console.log(response.data);
+          // vm.answer = _.capitalize(response.data.answer)
+        })
+        .catch(function (error) {
+          vm.answer = 'Error! Could not reach the API. ' + error
+        })
+    }
+  }
+})
+
+
+var results = [
+      { ip: '192.168.0.1',short: '.1', value: true, style: 'background:#ffffff;color:#333333' },
+      { ip: '192.168.0.2',short: '.2', value: false, style: 'background:#a9c9a4;color:#ffffff' },
+      { ip: '192.168.0.3',short: '.3', value: true, style: 'background:#ffffff;color:#333333' }
+    ]
+
+Vue.component('ip-item', {
+  props: ['data1'],
+  template: "<span v-html='data1.short' v-bind:style='data1.style'></span>"
+})
+
+var result_list = new Vue({
+  el: '#result_list',
+  data: {
+    itemList: results
+  }
+})
+
+
+</script>
+
+
+</body>
+
 </html>
