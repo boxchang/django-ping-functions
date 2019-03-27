@@ -69,7 +69,7 @@ def thread_pinger(i, q):
             print('%s is alive!' %ip)
             result['ip'] = ip
             result['result'] = 1
-            result['style'] = 'background:#ffffff;color:#333333'
+            result['style'] = 'background:#a9c9a4;color:#ffffff'
             result['short'] = ip[ip.rfind('.'):]
             results.append(result)
             out_q.put(str(ip) + " True")
@@ -77,7 +77,7 @@ def thread_pinger(i, q):
             print('%s is down...'%ip)
             result['ip'] = ip
             result['result'] = 0
-            result['style'] = 'background:#a9c9a4;color:#ffffff'
+            result['style'] = 'background:#ffffff;color:#333333'
             result['short'] = ip[ip.rfind('.'):]
             results.append(result)
             out_q.put(str(ip) + " False")
