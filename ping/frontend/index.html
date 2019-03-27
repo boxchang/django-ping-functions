@@ -100,7 +100,7 @@ var watchExampleVM = new Vue({
            $.post("/api/subnet_ping/", {ip: "10.231.0.0/24"},
              function(data){
                  alert(data);
-                 results = data;
+                 result_list.itemList = data;
              }
          );
     }
