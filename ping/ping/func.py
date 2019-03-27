@@ -60,9 +60,9 @@ def thread_pinger(i, q):
         ip=q.get()
         print('Thread %s pinging %s' %(i,ip) )
 
-        # ret=subprocess.call('ping -c 1 -W 1 %s' % ip,shell=True,stdout=open('/dev/null','w'),stderr=subprocess.STDOUT)
-        ret = subprocess.call('ping -n 1 %s' % ip, shell=True, stdout=subprocess.PIPE,
-                              stderr=subprocess.STDOUT)
+        ret=subprocess.call('ping -c 1 -W 1 %s' % ip,shell=True,stdout=open('/dev/null','w'),stderr=subprocess.STDOUT)
+        # ret = subprocess.call('ping -n 1 %s' % ip, shell=True, stdout=subprocess.PIPE,
+        #                       stderr=subprocess.STDOUT)
         result = {}
         if ret==0:
             print('%s is alive!' %ip)
