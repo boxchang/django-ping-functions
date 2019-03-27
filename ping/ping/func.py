@@ -9,7 +9,7 @@ num_threads = 15
 ips_q = queue.Queue()
 out_q = queue.Queue()
 
-result = {}
+results = []
 
 def call_ping(ip):
     ips_q.put(ip)
@@ -17,7 +17,7 @@ def call_ping(ip):
     worker.setDaemon(True)
     worker.start()
     ips_q.join()
-    return json.dumps(result)
+    return json.dumps(results)
 
 
 def call_subnet_ping(ip_d):
@@ -49,26 +49,36 @@ def call_subnet_ping(ip_d):
             break
         print(msg)
 
-    return json.dumps(result)
+    return json.dumps(results)
 
 
 def thread_pinger(i, q):
-    global result
+
+    global results
+
     while True:
         ip=q.get()
         print('Thread %s pinging %s' %(i,ip) )
 
-        ret=subprocess.call('ping -c 1 -W 1 %s' % ip,shell=True,stdout=open('/dev/null','w'),stderr=subprocess.STDOUT)
-        # ret = subprocess.call('ping -n 1 %s' % ip, shell=True, stdout=subprocess.PIPE,
-        #                       stderr=subprocess.STDOUT)
-
+        # ret=subprocess.call('ping -c 1 -W 1 %s' % ip,shell=True,stdout=open('/dev/null','w'),stderr=subprocess.STDOUT)
+        ret = subprocess.call('ping -n 1 %s' % ip, shell=True, stdout=subprocess.PIPE,
+                              stderr=subprocess.STDOUT)
+        result = {}
         if ret==0:
             print('%s is alive!' %ip)
-            result[ip] = 'True'
+            result['ip'] = ip
+            result['result'] = 1
+            result['style'] = 'background:#ffffff;color:#333333'
+            result['short'] = ip[ip.rfind('.'):]
+            results.append(result)
             out_q.put(str(ip) + " True")
         elif ret==1:
             print('%s is down...'%ip)
-            result[ip] = 'False'
+            result['ip'] = ip
+            result['result'] = 0
+            result['style'] = 'background:#a9c9a4;color:#ffffff'
+            result['short'] = ip[ip.rfind('.'):]
+            results.append(result)
             out_q.put(str(ip) + " False")
         q.task_done()
 
