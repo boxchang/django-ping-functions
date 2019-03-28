@@ -1,11 +1,9 @@
-#!/usr/bin/python
-# -*- coding: ascii -*-
 import json
 import os
 from threading import Thread
 import subprocess
 import queue
-from IPy import IP #调用IP
+from IPy import IP #??IP
 
 
 
@@ -27,10 +25,10 @@ def call_ping(ip):
 def call_subnet_ping(ip_d):
     ips = []
     print('ip_d:'+str(ip_d))
-    ip = IP(ip_d)  # 输入192.168.1.0/24网段
-    print(ip.len())  # 192.168.1.0/24的网段的IP个数
+    ip = IP(ip_d)  # ??192.168.1.0/24??
+    print(ip.len())  # 192.168.1.0/24????IP??
     for x in ip:
-        print(x)  # 输出192.168.1.0/24网段所有的ip清单
+        print(x)  # ??192.168.1.0/24?????ip??
         ips.append(str(x))
 
 
