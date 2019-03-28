@@ -45,6 +45,18 @@ div#result_list span {
 </div>
 
 <script>
+Vue.component('ip-item', {
+  props: ['data1'],
+  template: "<span v-html='data1.short' v-bind:style='data1.style'></span>"
+})
+
+var result_list = new Vue({
+  el: '#result_list',
+  data: {
+    itemList: results
+  }
+})
+
 var buttonclick = new Vue({
   delimiters:['[[', ']]'],
   el: '#watch-example',
@@ -58,7 +70,6 @@ var buttonclick = new Vue({
       var vm = this
            $.post("/api/subnet_ping/", {ip: this.question},
              function(data){
-                 alert(data);
                  result_list.itemList = data;
              }
          );
@@ -77,7 +88,6 @@ var watchExampleVM = new Vue({
   watch: {
     // 如果 `question` 发生改变，这个函数就会运行
     question: function (newQuestion, oldQuestion) {
-      alert('test');
       this.answer = 'Waiting for you to stop typing...'
       this.debouncedGetAnswer()
     }
@@ -114,19 +124,6 @@ var watchExampleVM = new Vue({
              }
          );
     }
-  }
-})
-
-
-Vue.component('ip-item', {
-  props: ['data1'],
-  template: "<span v-html='data1.short' v-bind:style='data1.style'></span>"
-})
-
-var result_list = new Vue({
-  el: '#result_list',
-  data: {
-    itemList: results
   }
 })
 
