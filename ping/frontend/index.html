@@ -67,7 +67,7 @@ var buttonclick = new Vue({
            $.post("/api/subnet_ping/", {ip: this.question},
              function(data){
                  result_list.itemList = data;
-                 this.answer = this.init_msg
+                 buttonclick.answer = init_msg;
              }
          );
     }
