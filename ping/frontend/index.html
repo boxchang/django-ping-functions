@@ -52,13 +52,13 @@ div#result_list span {
 //    ]
 
 var results = []
-
+var init_msg = 'please type ip subnet address'
 var buttonclick = new Vue({
   delimiters:['[[', ']]'],
   el: '#watch-example',
   data: {
     question: '',
-    answer: 'please type ip subnet address'
+    answer: this.init_msg
   },
   methods: {
     getIPstatus: function () {
@@ -67,6 +67,7 @@ var buttonclick = new Vue({
            $.post("/api/subnet_ping/", {ip: this.question},
              function(data){
                  result_list.itemList = data;
+                 this.answer = this.init_msg
              }
          );
     }
