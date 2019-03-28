@@ -45,17 +45,13 @@ div#result_list span {
 </div>
 
 <script>
-Vue.component('ip-item', {
-  props: ['data1'],
-  template: "<span v-html='data1.short' v-bind:style='data1.style'></span>"
-})
+//var results = [
+//      { ip: '192.168.0.1',short: '.1', value: true, style: 'background:#ffffff;color:#333333' },
+//      { ip: '192.168.0.2',short: '.2', value: false, style: 'background:#a9c9a4;color:#ffffff' },
+//      { ip: '192.168.0.3',short: '.3', value: true, style: 'background:#ffffff;color:#333333' }
+//    ]
 
-var result_list = new Vue({
-  el: '#result_list',
-  data: {
-    itemList: results
-  }
-})
+var results = []
 
 var buttonclick = new Vue({
   delimiters:['[[', ']]'],
@@ -127,7 +123,18 @@ var watchExampleVM = new Vue({
   }
 })
 
+Vue.component('ip-item', {
+  props: ['data1'],
+  template: "<span v-html='data1.short' v-bind:style='data1.style'></span>"
+})
 
+var result_list = new Vue({
+  delimiters:['[[', ']]'],
+  el: '#result_list',
+  data: {
+    itemList: results
+  }
+})
 </script>
 
 
