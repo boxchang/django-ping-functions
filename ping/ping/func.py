@@ -14,6 +14,10 @@ class SubnetPing:
 
     results = []
 
+    def __init__(self):
+        self.results = []
+
+
     def call_ping(self, ip):
         self.ips_q.put(ip)
         worker = Thread(target=self.thread_pinger, args=(0, self.ips_q))
@@ -69,7 +73,7 @@ class SubnetPing:
             result = {}
             if ret==0:
                 print('%s is alive!' %ip)
-                result['id'] = ip[ip.rfind('.')+1:]
+                result['id'] = int(ip[ip.rfind('.')+1:])
                 result['ip'] = ip
                 result['result'] = 1
                 result['style'] = 'background:#a9c9a4;color:#ffffff'
