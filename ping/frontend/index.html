@@ -63,13 +63,14 @@ var buttonclick = new Vue({
   methods: {
     getIPstatus: function () {
       this.answer = 'Processing...'
+      result_list.itemList = ''
       var vm = this
-           $.post("/api/subnet_ping/", {ip: this.question},
-             function(data){
-                 result_list.itemList = data;
-                 buttonclick.answer = init_msg;
-             }
-         );
+       $.post("/api/subnet_ping/", {ip: this.question},
+         function(data){
+             result_list.itemList = data;
+             buttonclick.answer = 'Done';
+         }
+       );
     }
   }
 })
