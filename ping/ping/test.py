@@ -2,7 +2,7 @@ import json
 
 from ping.func import SubnetPing
 
-ip = '127.0.0.0/30'
+ip = '127.0.0.0/27'
 subnetping = SubnetPing()
 result = subnetping.call_subnet_ping(ip)
 # # sorted(result.items(), key=lambda item:item[1])

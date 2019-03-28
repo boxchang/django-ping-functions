@@ -73,7 +73,12 @@ class SubnetPing:
             result = {}
             if ret==0:
                 print('%s is alive!' %ip)
-                result['id'] = int(ip[ip.rfind('.')+1:])
+                try:
+                    result['id'] = int(ip[ip.rfind('.')+1:])
+                except ValueError as err:
+                    print(err)
+                    print(ip)
+                    pass
                 result['ip'] = ip
                 result['result'] = 1
                 result['style'] = 'background:#a9c9a4;color:#ffffff'
@@ -82,7 +87,12 @@ class SubnetPing:
                 self.out_q.put(str(ip) + " True")
             elif ret==1:
                 print('%s is down...'%ip)
-                result['id'] = ip[ip.rfind('.') + 1:]
+                try:
+                    result['id'] = int(ip[ip.rfind('.')+1:])
+                except ValueError as err:
+                    print(err)
+                    print(ip)
+                    pass
                 result['ip'] = ip
                 result['result'] = 0
                 result['style'] = 'background:#ffffff;color:#333333'
