@@ -50,7 +50,7 @@ def call_subnet_ping(ip_d):
         except queue.Empty:
             break
         print(msg)
-    results.sort(key=lambda d: d['id'])
+    # results.sort(key=lambda d: d['id'])
     return json.dumps(results)
 
 
