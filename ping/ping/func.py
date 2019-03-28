@@ -50,8 +50,8 @@ def call_subnet_ping(ip_d):
         except queue.Empty:
             break
         print(msg)
-
-    return json.dumps(results.sort(key=lambda d:d['short']))
+    results.sort(key=lambda d: d['id'])
+    return json.dumps(results)
 
 
 def thread_pinger(i, q):
