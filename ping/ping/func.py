@@ -1,4 +1,5 @@
 import json
+import os
 from threading import Thread
 import subprocess
 import queue
@@ -50,7 +51,7 @@ def call_subnet_ping(ip_d):
             break
         print(msg)
 
-    return json.dumps(results)
+    return json.dumps(results.sort(key=lambda d:d['short']))
 
 
 def thread_pinger(i, q):
@@ -60,13 +61,16 @@ def thread_pinger(i, q):
     while True:
         ip=q.get()
         print('Thread %s pinging %s' %(i,ip) )
+        print('OS:' + os.name)
+        if os.name=='nt':
+            ret = subprocess.call('ping -n 1 %s' % ip, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        else:
+            ret = subprocess.call('ping -c 1 -W 1 %s' % ip,shell=True,stdout=open('/dev/null','w'),stderr=subprocess.STDOUT)
 
-        ret=subprocess.call('ping -c 1 -W 1 %s' % ip,shell=True,stdout=open('/dev/null','w'),stderr=subprocess.STDOUT)
-        # ret = subprocess.call('ping -n 1 %s' % ip, shell=True, stdout=subprocess.PIPE,
-        #                       stderr=subprocess.STDOUT)
         result = {}
         if ret==0:
             print('%s is alive!' %ip)
+            result['id'] = ip[ip.rfind('.')+1:]
             result['ip'] = ip
             result['result'] = 1
             result['style'] = 'background:#a9c9a4;color:#ffffff'
@@ -75,6 +79,7 @@ def thread_pinger(i, q):
             out_q.put(str(ip) + " True")
         elif ret==1:
             print('%s is down...'%ip)
+            result['id'] = ip[ip.rfind('.') + 1:]
             result['ip'] = ip
             result['result'] = 0
             result['style'] = 'background:#ffffff;color:#333333'
