@@ -11,7 +11,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
-
 <style>
 div#result_list span {
     box-shadow: 0px 0px 1px #777;
@@ -30,10 +29,11 @@ div#result_list span {
 
 <div id="watch-example">
 <p>
-    Ask a yes/no question:
+    VLSM:
     <input v-model="question">
+    <button type="button" @click="getIPstatus">CHECK</button>
 </p>
-<p>{{ answer }}</p>
+<p>[[ answer ]]</p>
 </div>
 
 <div id="result_list">
@@ -45,22 +45,31 @@ div#result_list span {
 </div>
 
 <script>
-// $(function() {
-//     $.post("192.168.56.2:8000/api/subnet_ping/", {ip: "10.231.0.0/24"},
-//             function(data){
-//                 alert(data);
-//             }
-//         );
-// });
-var results = [
-      { ip: '192.168.0.1',short: '.1', value: true, style: 'background:#ffffff;color:#333333' },
-      { ip: '192.168.0.2',short: '.2', value: false, style: 'background:#a9c9a4;color:#ffffff' },
-      { ip: '192.168.0.3',short: '.3', value: true, style: 'background:#ffffff;color:#333333' }
-    ]
+var buttonclick = new Vue({
+  delimiters:['[[', ']]'],
+  el: '#watch-example',
+  data: {
+    question: '',
+    answer: 'please type ip subnet address'
+  },
+  methods: {
+    getIPstatus: function () {
+      this.answer = 'Processing...'
+      var vm = this
+           $.post("/api/subnet_ping/", {ip: this.question},
+             function(data){
+                 alert(data);
+                 result_list.itemList = data;
+             }
+         );
+    }
+  }
+})
 
 
 var watchExampleVM = new Vue({
-  el: '#watch-example',
+  delimiters:['[[', ']]'],
+  el: '#watch-example2',
   data: {
     question: '',
     answer: 'I cannot give you an answer until you ask a question!'
@@ -68,6 +77,7 @@ var watchExampleVM = new Vue({
   watch: {
     // 如果 `question` 发生改变，这个函数就会运行
     question: function (newQuestion, oldQuestion) {
+      alert('test');
       this.answer = 'Waiting for you to stop typing...'
       this.debouncedGetAnswer()
     }
