@@ -26,11 +26,11 @@ div#result_list span {
     float: left;
 }
 </style>
-
+{% if user.is_authenticated %}
 <div id="watch-example">
 <p>
     VLSM:
-    <input v-model="question">
+    <input v-model="question" placeholder="127.0.0.0/24">
     <button type="button" @click="getIPstatus">CHECK</button>
 </p>
 <p>[[ answer ]]</p>
@@ -43,7 +43,9 @@ div#result_list span {
     v-bind:key="item.ip"
     ></ip-item>
 </div>
-
+{% else %}
+  請先登入<a href="/admin">admin</a>
+{% endif %}
 <script>
 //var results = [
 //      { ip: '192.168.0.1',short: '.1', value: true, style: 'background:#ffffff;color:#333333' },
